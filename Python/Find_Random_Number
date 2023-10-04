@@ -1,0 +1,69 @@
+import random
+class RandomNumbers:
+
+    '''
+    Класс RandomNumbers, принимает два числа:
+        Первое число - начало диапазона, в классе определено как start_of_sequence
+        Второе число - конец диапазона, в классе определено как end_of_sequence
+
+    Метод random при вызове создает случайное число в заданном диапазоне:
+        random_number - случайное число заданное с помощью randint модуля random;
+        predictable - число задаваемое пользователем, значение присваивается в цикле while, который будет повторять
+            код, до того момента, пока пользователь не угадает число;
+        counter - количество попыток, за которое пользователь угадал заданное число, увеличивается на 1 за каждую итера-
+            цию цикла while
+        Сам метод принимает start_of_sequence и end_of_sequence как переменные экземпляра
+    '''
+    
+    def __init__(self, start_of_sequence, end_of_sequence):
+        
+        self.start_of_sequence = start_of_sequence
+        self.end_of_sequence = end_of_sequence
+
+    def random(self):
+        
+        random_number = random.randint(self.start_of_sequence, self.end_of_sequence+1)
+        predictable = 0
+        counter = 0
+        
+        while predictable != random_number:
+            
+            counter += 1
+            predictable = int(input('Введите число, которое мы загадали: '))
+            
+            if predictable in range(self.start_of_sequence, self.end_of_sequence+1):
+                
+                if predictable == random_number:
+                    print('Круто ты угадал')
+                    return f'Количество попыток: {counter}'
+                elif predictable <= random_number:
+                    print('Нет нихуя, пробуй больше')
+                else:
+                    print('Нет нихуя, пробуй меньше')
+            
+            else:
+                print('Нет нихуя, ты ввел число вне диапазона')
+
+
+# Конструкция try...except отлавливает ошибку связанную с вводом данных не относящихся к целочисленным
+try:
+    
+    start_number = int(input('Введите первое число: '))
+    end_number = int(input('Введите второе число: '))
+    
+    while start_number >= end_number:
+        
+        if start_number >= end_number:
+            print('Первое число диапазона не должно быть больше или равно конечному числу')
+            start_number = int(input('Введите первое число: '))
+            end_number = int(input('Введите второе число: '))
+        else:
+            start_number = int(input('Введите первое число: '))
+            end_number = int(input('Введите второе число: '))
+
+    sequence = RandomNumbers(start_number, end_number)
+    print(sequence.random())
+
+except ValueError as error:
+
+    print('Вы не ввели число, обновите страницу и введите число')
