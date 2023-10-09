@@ -1,0 +1,149 @@
+# 21 game
+""" 
+    Just a simple game 21, against imitation of bot
+
+    Rule is simple. 
+    You need to score 21 points or more points than bot
+
+    The game goes on until the player writes no in the console.
+    Programm consist of three functions:
+    1) game_batch() - game round funcction. It`s responsible for who will go first and who wins according to the total points scored.
+    2) human() - player`s function. It`s responsible for which cards a person has and whether he wants to take even more cards or not.
+    3) bot() - Imitation of bot function. It works just a programm which stops typing cards when sum of cards(numbers) can be greater than 21.
+       When ace drops out (1 or 11), if sum+11 >= 21 ace will be equal to 1.
+
+    To stop the game, you must write "no" in the console when programm will ask you 'Do you want to play one more time ?)(yes/no): '
+"""
+
+import random
+def game_batch():
+
+    Name = input('Input your name: ')
+    print(f'Hello {Name}!\nIT IS TIME TO PLAY OOOOCCHHHKOOOOO!!!!!!!!')
+    print('Let`s choose the first turner')
+    play = 'yes'
+    human_wins = 0
+    bot_wins = 0
+
+    while play == 'yes':
+        randomiser = random.randint(1, 2)
+
+        if randomiser == 1:
+            print('You turn first!')
+            human()
+            bot()
+
+        else:
+            print('bot turns first')
+            bot()
+            human()
+
+
+        if sum(list_of_card_human) > sum(list_of_card_bot) and sum(list_of_card_human) <= 21:
+            print('!!!Congratulations!!! You are winner of this batch')
+            print('You score:', sum(list_of_card_human))
+            print('Bot score:', sum(list_of_card_bot))
+            play = input('Do you want to play one more time ?)(yes/no): ')
+        elif sum(list_of_card_human) > 21:
+            print(f'You score {sum(list_of_card_human) - 21} more point than needed')
+            print('You score:', sum(list_of_card_human))
+            print('Bot score:', sum(list_of_card_bot))
+            play = input('Do you want to play one more time ?)(yes/no): ')
+        elif sum(list_of_card_human) == sum(list_of_card_bot):
+            print('You have equal point')
+            print('You score:', sum(list_of_card_human))
+            print('Bot score:', sum(list_of_card_bot))
+            play = input('Do you want to play one more time ?)(yes/no): ')
+        else:
+            print(f'Bot is winner. It takes {sum(list_of_card_bot) - sum(list_of_card_human)} more popints')
+            print('You score:', sum(list_of_card_human))
+            print('Bot score:', sum(list_of_card_bot))
+            play = input('Do you want to play one more time ?)(yes/no): ')
+
+    else:
+        return 'See you next time)'
+
+def human():
+
+    global list_of_card_human
+    list_of_card_human = []
+
+    get_the_card = 'yes'
+
+    ace = 11
+
+    while get_the_card != 'no':
+        card = random.randint(2, 11)
+
+        if card == 5:
+            continue
+
+        elif card == 11:
+
+            print('You got an ace!')
+            print(card)
+
+            ace = int(input('Do you want to put it as 1 or as 11 ?: '))
+
+
+            if ace == 11:
+                list_of_card_human.append(11)
+
+                print(f'You have {sum(list_of_card_human)} points')
+
+                if sum(list_of_card_human) >= 21:
+                    break
+
+            else:
+                list_of_card_human.append(1)
+                print(f'You have {sum(list_of_card_human)} points')
+                if sum(list_of_card_human) >= 21:
+                    break
+
+            get_the_card = input('Do you want o get more cards ?(yes/no): ').lower()
+
+        else:
+            list_of_card_human.append(card)
+            print(card)
+            print(f'You have {sum(list_of_card_human)} points')
+            if sum(list_of_card_human) >= 21:
+                break
+
+            get_the_card = input('Do you want o get more cards ?(yes/no): ').lower()
+
+    return sum(list_of_card_human)
+
+
+def bot():
+
+    print('The bot`s turn)0)')
+    global list_of_card_bot
+    list_of_card_bot = []
+    ace = 11
+
+    while sum(list_of_card_bot) <= 21:
+
+        card_of_bot = random.randint(2, 11)
+
+        if sum(list_of_card_bot) >= 21:
+            break
+
+        if card_of_bot == 5:
+            continue
+
+        elif card_of_bot == 11:
+            if sum(list_of_card_bot) + card_of_bot >= 21:
+                list_of_card_bot.append(1)
+
+            else:
+                list_of_card_bot.append(11)
+
+        else:
+            if sum(list_of_card_bot) + card_of_bot >= 21:
+                break
+            else:
+                list_of_card_bot.append(card_of_bot)
+
+    return sum(list_of_card_bot)
+
+print(game_batch())
